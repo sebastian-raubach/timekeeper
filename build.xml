@@ -1,0 +1,131 @@
+<!--
+  ~ Copyright 2017 Sebastian Raubach
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project name="Timesheetinator" basedir="." default="jar">
+
+	<property name="src.dir" value="src"/>
+	<property name="jar.dir" value="jar"/>
+	<property name="img.dir" value="img"/>
+	<property name="res.dir" value="res"/>
+	<property name="licenses.dir" value="licenses"/>
+
+	<!-- Define the necessary paths -->
+	<property name="lib.dir" value="lib"/>
+	<property name="lib.dev.dir" value="lib_swt"/>
+	<property name="classes.dir" value="bin"/>
+
+	<!-- Define the main class -->
+	<property name="main-class" value="baz.timesheetinator.Timesheetinator"/>
+
+	<path id="base-classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
+
+	<!-- Define the class path -->
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+		<fileset dir="${lib.dev.dir}" includes="**/swt_win32_x64.jar"/>
+	</path>
+
+	<macrodef name="createclasspath">
+		<attribute name="name"/>
+		<attribute name="swtlib"/>
+		<sequential>
+			<pathconvert pathsep=" " property="@{name}.classpath">
+				<path refid="base-classpath"/>
+				<fileset dir="${lib.dev.dir}" includes="**/swt_@{swtlib}.jar"/>
+				<mapper>
+					<chainedmapper>
+						<flattenmapper/>
+						<globmapper from="*.jar" to="*.jar"/>
+					</chainedmapper>
+				</mapper>
+			</pathconvert>
+		</sequential>
+	</macrodef>
+
+	<!-- Clean previously built files -->
+	<target name="clean">
+		<delete dir="${classes.dir}"/>
+	</target>
+
+	<!-- Compile the project -->
+	<target name="compile">
+		<mkdir dir="${classes.dir}"/>
+		<javac classpathref="classpath" destdir="${classes.dir}" encoding="utf-8" includeantruntime="false" source="8" srcdir="${src.dir}"
+			   target="8"/>
+	</target>
+
+	<!-- Define classpath and create the jar folder -->
+	<target name="pre_jar" depends="compile">
+		<!-- Linux 32bit -->
+		<createclasspath name="win86" swtlib="win32_x86"/>
+		<!-- Linux 64bit -->
+		<createclasspath name="win64" swtlib="win32_x64"/>
+		<!-- Windows 32bit -->
+		<createclasspath name="linux86" swtlib="linux_gtk_x86"/>
+		<!-- Windows 64bit -->
+		<createclasspath name="linux64" swtlib="linux_gtk_x64"/>
+		<!-- MacOS 32bit -->
+		<createclasspath name="macos86" swtlib="macos_x86"/>
+		<!-- MacOS 64bit -->
+		<createclasspath name="macos64" swtlib="macos_x64"/>
+
+		<mkdir dir="${jar.dir}"/>
+	</target>
+
+	<macrodef name="createjar">
+		<attribute name="swtlib"/>
+		<attribute name="swtclasspath"/>
+		<sequential>
+			<jar basedir="${classes.dir}" destfile="${jar.dir}/${ant.project.name}_@{swtlib}.jar">
+				<manifest>
+					<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+					<attribute name="Rsrc-Main-Class" value="${main-class}"/>
+					<attribute name="Class-Path" value="."/>
+					<attribute name="Rsrc-Class-Path" value="./ @{swtclasspath}"/>
+				</manifest>
+
+				<zipgroupfileset dir="${lib.dir}" includes="**/jar-in-jar-loader.jar"/>
+				<zipfileset dir="${lib.dev.dir}" includes="**/swt_@{swtlib}.jar"/>
+				<zipfileset dir="${lib.dir}" excludes="**/jar-in-jar-loader.jar" includes="**/*.jar"/>
+
+				<zipfileset dir="${img.dir}" includes="**/*.*" prefix="img"/>
+				<zipfileset dir="${licenses.dir}" includes="**/*.*" prefix="licenses"/>
+				<zipfileset dir="${res.dir}" includes="**/*.*"/>
+				<zipfileset file="LICENSE"/>
+			</jar>
+		</sequential>
+	</macrodef>
+
+	<!-- Create the jar files -->
+	<target name="jar" depends="pre_jar">
+		<!-- Linux 32bit -->
+		<createjar swtclasspath="${linux86.classpath}" swtlib="linux_gtk_x86"/>
+		<!-- Linux 64bit -->
+		<createjar swtclasspath="${linux64.classpath}" swtlib="linux_gtk_x64"/>
+		<!-- Windows 32bit -->
+		<createjar swtclasspath="${win86.classpath}" swtlib="win32_x86"/>
+		<!-- Windows 64bit -->
+		<createjar swtclasspath="${win64.classpath}" swtlib="win32_x64"/>
+		<!-- MacOS 32bit -->
+		<createjar swtclasspath="${macos86.classpath}" swtlib="macos_x86"/>
+		<!-- MacOS 64bit -->
+		<createjar swtclasspath="${macos64.classpath}" swtlib="macos_x64"/>
+	</target>
+
+	<target name="clean-build" depends="clean,jar"/>
+</project>
