@@ -87,11 +87,16 @@
 		<mkdir dir="${jar.dir}"/>
 	</target>
 
+	<!-- Ask for the version number -->
+	<target name="getversion">
+		<input addproperty="version.number" message="Enter the version number of Timesheetinator:"/>
+	</target>
+
 	<macrodef name="createjar">
 		<attribute name="swtlib"/>
 		<attribute name="swtclasspath"/>
 		<sequential>
-			<jar basedir="${classes.dir}" destfile="${jar.dir}/${ant.project.name}_@{swtlib}.jar">
+			<jar basedir="${classes.dir}" destfile="${jar.dir}/${ant.project.name}_${version.number}_@{swtlib}.jar">
 				<manifest>
 					<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
 					<attribute name="Rsrc-Main-Class" value="${main-class}"/>
@@ -112,7 +117,7 @@
 	</macrodef>
 
 	<!-- Create the jar files -->
-	<target name="jar" depends="pre_jar">
+	<target name="jar" depends="getversion,pre_jar">
 		<!-- Linux 32bit -->
 		<createjar swtclasspath="${linux86.classpath}" swtlib="linux_gtk_x86"/>
 		<!-- Linux 64bit -->
