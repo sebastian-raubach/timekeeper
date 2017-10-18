@@ -9,3 +9,9 @@ Go back in time and look at historic data in a heatmapped table.
 ## Download
 
 Check the [Releases](../../releases) to get the latest executables.
+
+## Timesheetinator Help Content
+
+Please consult the [Wiki](../../wiki) for help.
+
+If you are still having problems with this tool, want to chat to me about features you think I should include, or just want to point out some bugs then please get in touch with me. You can get me by email at sebastian@raubach.co.uk.
