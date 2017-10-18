@@ -283,6 +283,10 @@ public class Timesheetinator extends RestartableApplication
 		item.setText(RB.getString(RB.MENU_HELP));
 		item.setMenu(aboutMenu);
 
+		item = new MenuItem(aboutMenu, SWT.NONE);
+		item.setText(RB.getString(RB.MENU_HELP_ONLINE_HELP));
+		item.addListener(SWT.Selection, e -> OSUtils.open(RB.getString(RB.URL_GITHUB_WIKI)));
+
 		/* Help - About */
 		addAboutMenuItemListener(RB.getString(RB.MENU_HELP_ABOUT), aboutMenu, e -> new AboutDialog(shell).open());
 
