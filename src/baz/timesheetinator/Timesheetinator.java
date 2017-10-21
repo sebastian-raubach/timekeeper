@@ -42,6 +42,11 @@ import jhi.swtcommons.util.*;
  */
 public class Timesheetinator extends RestartableApplication
 {
+	private static final String APP_ID         = "2414-6232-2575-1498";
+	private static final String UPDATE_ID      = "314";
+	private static final String VERSION_NUMBER = "x.xx.xx.xx";
+	private static final String UPDATER_URL    = "https://github.com/sebastian-raubach/timesheetinator/blob/master/installers/updates.xml";
+
 	public static final  boolean READ_ONLY_MODE = false;
 	private static final int     WRITE_INTERVAL = 300000;
 	/** Indicates whether the application is run form a jar or not */
@@ -287,6 +292,12 @@ public class Timesheetinator extends RestartableApplication
 		item.setText(RB.getString(RB.MENU_HELP_ONLINE_HELP));
 		item.addListener(SWT.Selection, e -> OSUtils.open(RB.getString(RB.URL_GITHUB_WIKI)));
 
+		/* Help - Check for updates */
+		item = new MenuItem(aboutMenu, SWT.NONE);
+		item.setText(RB.getString(RB.MENU_HELP_UPDATE));
+		item.addListener(SWT.Selection, e -> checkForUpdate(false));
+		item.setEnabled(WITHIN_JAR);
+
 		/* Help - About */
 		addAboutMenuItemListener(RB.getString(RB.MENU_HELP_ABOUT), aboutMenu, e -> new AboutDialog(shell).open());
 
@@ -489,6 +500,36 @@ public class Timesheetinator extends RestartableApplication
 			/* On button click, toggle state */
 			if (!running)
 				start();
+		}
+	}
+
+	@Override
+	protected void onPreStart()
+	{
+		checkForUpdate(true);
+	}
+
+	private void checkForUpdate(boolean startupCall)
+	{
+		if (WITHIN_JAR)
+		{
+			/* Check if an update is available */
+			Install4jUtils i4j = new Install4jUtils(APP_ID, UPDATE_ID);
+
+			Install4jUtils.UpdateInterval interval = startupCall ? TimesheetPropertyReader.updateInterval : Install4jUtils.UpdateInterval.STARTUP;
+
+			i4j.setDefaultVersionNumber(VERSION_NUMBER);
+			i4j.setUser(interval, "", 0);
+			i4j.setURLs(UPDATER_URL, "");
+			if (!startupCall)
+			{
+				i4j.setCallback(updateAvailable -> {
+					if (!updateAvailable)
+						DialogUtils.showInformation(RB.getString(RB.INFORMATION_NO_UPDATE_AVAILABLE));
+				});
+			}
+
+			i4j.doStartUpCheck(Timesheetinator.class);
 		}
 	}
 }

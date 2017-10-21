@@ -67,11 +67,11 @@ public class HistoryDialog extends Dialog
 
 		Project.sortByPosition(projects);
 
-		List<baz.timesheetinator.database.HistoryData> d = baz.timesheetinator.database.HistoryData.getAll();
+		List<HistoryData> d = HistoryData.getAll();
 
-		Map<Date, Map<Project, baz.timesheetinator.database.HistoryData>> temp = new HashMap<>();
+		Map<Date, Map<Project, HistoryData>> temp = new HashMap<>();
 
-		for (baz.timesheetinator.database.HistoryData i : d)
+		for (HistoryData i : d)
 		{
 			if (SDF_DATE.format(i.getDate()).equals(SDF_DATE.format(new Date())))
 				continue;
@@ -97,7 +97,7 @@ public class HistoryDialog extends Dialog
 			.max()
 			.ifPresent(value -> gradient = new Gradient(colors, 0, value));
 
-		data.sort(Comparator.comparing(HistoryDay::getDay));
+		data.sort(Comparator.comparing(HistoryDay::getDay).reversed());
 	}
 
 	@Override
@@ -127,8 +127,10 @@ public class HistoryDialog extends Dialog
 		Composite container = (Composite) super.createDialogArea(parent);
 		container.setLayout(new FillLayout());
 
-		TableViewer viewer = new TableViewer(container, SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		viewer.setContentProvider(new ArrayContentProvider());
+		TableViewer viewer = new TableViewer(container, SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.VIRTUAL);
+//		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new LazyContentProvider(viewer));
+		viewer.setUseHashlookup(true);
 
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 		TableColumn c = column.getColumn();
@@ -296,6 +298,7 @@ public class HistoryDialog extends Dialog
 		});
 
 		viewer.setInput(data);
+		viewer.setItemCount(data.size());
 
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
@@ -365,5 +368,30 @@ public class HistoryDialog extends Dialog
 		}
 
 		return super.close();
+	}
+
+	private class LazyContentProvider implements ILazyContentProvider
+	{
+		private TableViewer      viewer;
+		private List<HistoryDay> elements;
+
+		public LazyContentProvider(TableViewer viewer)
+		{
+			this.viewer = viewer;
+		}
+
+		public void dispose()
+		{
+		}
+
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+		{
+			this.elements = (List<HistoryDay>) newInput;
+		}
+
+		public void updateElement(int index)
+		{
+			viewer.replace(elements.get(index), index);
+		}
 	}
 }

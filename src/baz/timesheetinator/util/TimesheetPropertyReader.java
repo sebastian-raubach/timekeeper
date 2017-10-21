@@ -26,10 +26,12 @@ import jhi.swtcommons.util.*;
  */
 public class TimesheetPropertyReader extends PropertyReader
 {
-	public static final  String PROPERTIES_FOLDER  = "baz";
-	private static final String PREFERENCE_OPACITY = "preferences.opacity";
-	private static final String PROPERTIES_FILE    = "/timesheetinator.properties";
-	public static        int    opacity            = 255;
+	public static final  String                        PROPERTIES_FOLDER  = "baz";
+	private static final String                        PREFERENCE_OPACITY = "preferences.opacity";
+	private static final String                        PREFERENCE_UPDATE  = "preference.update.interval";
+	private static final String                        PROPERTIES_FILE    = "/timesheetinator.properties";
+	public static        int                           opacity            = 255;
+	public static        Install4jUtils.UpdateInterval updateInterval     = Install4jUtils.UpdateInterval.STARTUP;
 	private static File localFile;
 
 	public TimesheetPropertyReader()
@@ -76,6 +78,14 @@ public class TimesheetPropertyReader extends PropertyReader
 		}
 
 		opacity = getPropertyInteger(PREFERENCE_OPACITY, 255);
+		try
+		{
+			updateInterval = Install4jUtils.UpdateInterval.valueOf(getProperty(PREFERENCE_UPDATE));
+		}
+		catch (Exception e)
+		{
+			updateInterval = Install4jUtils.UpdateInterval.STARTUP;
+		}
 	}
 
 	@Override
@@ -85,6 +95,7 @@ public class TimesheetPropertyReader extends PropertyReader
 			return;
 
 		set(PREFERENCE_OPACITY, Integer.toString(opacity));
+		set(PREFERENCE_UPDATE, updateInterval.name());
 
 		localFile.getParentFile().mkdirs();
 		localFile.createNewFile();

@@ -14,52 +14,41 @@
   ~ limitations under the License.
   -->
 
-<project name="Timesheetinator" basedir="." default="jar">
+<project name="Timesheetinator" basedir="." default="clean-build">
 
 	<property name="src.dir" value="src"/>
-	<property name="jar.dir" value="jar"/>
-	<property name="img.dir" value="img"/>
-	<property name="res.dir" value="res"/>
-	<property name="licenses.dir" value="licenses"/>
 
 	<!-- Define the necessary paths -->
+	<property name="build.dir" value="bin_jar"/>
 	<property name="lib.dir" value="lib"/>
-	<property name="lib.dev.dir" value="lib_swt"/>
-	<property name="classes.dir" value="bin"/>
+	<property name="lib.deploy.dir" value="lib_swt"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="jar.dir" value="${build.dir}/jar"/>
+	<property name="img.dir" value="img"/>
+	<property name="res.dir" value="res"/>
 
 	<!-- Define the main class -->
 	<property name="main-class" value="baz.timesheetinator.Timesheetinator"/>
 
-	<path id="base-classpath">
-		<fileset dir="${lib.dir}" includes="**/*.jar"/>
-	</path>
-
 	<!-- Define the class path -->
 	<path id="classpath">
 		<fileset dir="${lib.dir}" includes="**/*.jar"/>
-		<fileset dir="${lib.dev.dir}" includes="**/swt_win32_x64.jar"/>
+		<fileset dir="${lib.deploy.dir}" includes="**/*.jar"/>
 	</path>
 
-	<macrodef name="createclasspath">
-		<attribute name="name"/>
-		<attribute name="swtlib"/>
-		<sequential>
-			<pathconvert pathsep=" " property="@{name}.classpath">
-				<path refid="base-classpath"/>
-				<fileset dir="${lib.dev.dir}" includes="**/swt_@{swtlib}.jar"/>
-				<mapper>
-					<chainedmapper>
-						<flattenmapper/>
-						<globmapper from="*.jar" to="*.jar"/>
-					</chainedmapper>
-				</mapper>
-			</pathconvert>
-		</sequential>
-	</macrodef>
+	<pathconvert pathsep=" " property="base.classpath">
+		<path refid="classpath"/>
+		<mapper>
+			<chainedmapper>
+				<flattenmapper/>
+				<globmapper from="*.jar" to="*.jar"/>
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
 
 	<!-- Clean previously built files -->
 	<target name="clean">
-		<delete dir="${classes.dir}"/>
+		<delete dir="${build.dir}"/>
 	</target>
 
 	<!-- Compile the project -->
@@ -71,66 +60,48 @@
 
 	<!-- Define classpath and create the jar folder -->
 	<target name="pre_jar" depends="compile">
-		<!-- Linux 32bit -->
-		<createclasspath name="win86" swtlib="win32_x86"/>
-		<!-- Linux 64bit -->
-		<createclasspath name="win64" swtlib="win32_x64"/>
-		<!-- Windows 32bit -->
-		<createclasspath name="linux86" swtlib="linux_gtk_x86"/>
-		<!-- Windows 64bit -->
-		<createclasspath name="linux64" swtlib="linux_gtk_x64"/>
-		<!-- MacOS 32bit -->
-		<createclasspath name="macos86" swtlib="macos_x86"/>
-		<!-- MacOS 64bit -->
-		<createclasspath name="macos64" swtlib="macos_x64"/>
-
 		<mkdir dir="${jar.dir}"/>
 	</target>
 
-	<!-- Ask for the version number -->
-	<target name="getversion">
-		<input addproperty="version.number" message="Enter the version number of Timesheetinator:"/>
-	</target>
-
-	<macrodef name="createjar">
-		<attribute name="swtlib"/>
-		<attribute name="swtclasspath"/>
-		<sequential>
-			<jar basedir="${classes.dir}" destfile="${jar.dir}/${ant.project.name}_${version.number}_@{swtlib}.jar">
-				<manifest>
-					<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-					<attribute name="Rsrc-Main-Class" value="${main-class}"/>
-					<attribute name="Class-Path" value="."/>
-					<attribute name="Rsrc-Class-Path" value="./ @{swtclasspath}"/>
-				</manifest>
-
-				<zipgroupfileset dir="${lib.dir}" includes="**/jar-in-jar-loader.jar"/>
-				<zipfileset dir="${lib.dev.dir}" includes="**/swt_@{swtlib}.jar"/>
-				<zipfileset dir="${lib.dir}" excludes="**/jar-in-jar-loader.jar" includes="**/*.jar"/>
-
-				<zipfileset dir="${img.dir}" includes="**/*.*" prefix="img"/>
-				<zipfileset dir="${licenses.dir}" includes="**/*.*" prefix="licenses"/>
-				<zipfileset dir="${res.dir}" includes="**/*.*"/>
-				<zipfileset file="LICENSE"/>
-			</jar>
-		</sequential>
-	</macrodef>
-
 	<!-- Create the jar files -->
-	<target name="jar" depends="getversion,pre_jar">
-		<!-- Linux 32bit -->
-		<createjar swtclasspath="${linux86.classpath}" swtlib="linux_gtk_x86"/>
-		<!-- Linux 64bit -->
-		<createjar swtclasspath="${linux64.classpath}" swtlib="linux_gtk_x64"/>
-		<!-- Windows 32bit -->
-		<createjar swtclasspath="${win86.classpath}" swtlib="win32_x86"/>
-		<!-- Windows 64bit -->
-		<createjar swtclasspath="${win64.classpath}" swtlib="win32_x64"/>
-		<!-- MacOS 32bit -->
-		<createjar swtclasspath="${macos86.classpath}" swtlib="macos_x86"/>
-		<!-- MacOS 64bit -->
-		<createjar swtclasspath="${macos64.classpath}" swtlib="macos_x64"/>
+	<target name="jar" depends="pre_jar">
+		<jar basedir="${classes.dir}" destfile="${jar.dir}/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}"/>
+				<attribute name="Class-Path" value="./ ${base.classpath}"/>
+				<attribute name="Implementation-Version" value="${i4j.version}"/>
+			</manifest>
+
+			<zipfileset dir="${img.dir}" includes="**/*.*" prefix="img"/>
+			<zipfileset dir="${res.dir}" includes="**/*.*"/>
+			<!-- Include the licence -->
+			<zipfileset dir="${basedir}" includes="LICENSE"/>
+
+			<zipfileset dir="licenses" includes="**/*.txt" prefix="licenses"/>
+		</jar>
+
+		<!-- Copy the copyright information -->
+		<copy file="LICENSE" overwrite="true" todir="${jar.dir}"/>
 	</target>
 
 	<target name="clean-build" depends="clean,jar"/>
+
+	<!-- Ask for the version number -->
+	<target name="getversion">
+		<input addproperty="i4j.version" message="Enter the version number of G3DI:"/>
+	</target>
+
+	<!-- Build the installers -->
+	<target name="install4j" depends="getversion, clean-build">
+		<taskdef name="install4j" classname="com.install4j.Install4JTask" classpath="C:\Program Files\install4j7\bin\ant.jar"/>
+
+		<delete>
+			<fileset dir="installer" includes="**/*.exe"/>
+			<fileset dir="installer" includes="**/*.sh"/>
+			<fileset dir="installer" includes="**/*.dmg"/>
+		</delete>
+
+		<install4j projectfile="installer/timesheetinator.install4j" release="${i4j.version}"/>
+	</target>
+
 </project>

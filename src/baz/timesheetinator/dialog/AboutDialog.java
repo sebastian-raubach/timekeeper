@@ -83,7 +83,7 @@ public class AboutDialog extends BannerDialog
 
         /* Add the app name */
 		Label name = new Label(composite, SWT.WRAP);
-		name.setText(RB.getString(RB.APPLICATION_TITLE) + " (" + RB.getString(RB.APPLICATION_VERSION) + ")");
+		name.setText(RB.getString(RB.APPLICATION_TITLE) + " (" + Install4jUtils.getVersion(Timesheetinator.class) + ")");
 
 		Resources.Fonts.applyFontSize(name, 16);
 

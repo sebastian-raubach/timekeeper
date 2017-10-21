@@ -41,11 +41,12 @@ import jhi.swtcommons.util.*;
  */
 public class SettingsDialog extends Dialog
 {
-	private Shell               parentShell;
-	private Scale               scale;
-	private Text                label;
-	private List<Project>       activeProjects;
-	private CheckboxTableViewer viewer;
+	private Shell                     parentShell;
+	private Scale                     scale;
+	private Text                      label;
+	private List<Project>             activeProjects;
+	private CheckboxTableViewer       viewer;
+	private UpdateIntervalComboViewer updateIntervalComboViewer;
 
 	//make sure you dispose these buttons when viewer input changes
 	private Map<Object, Button> tableButtons = new HashMap<>();
@@ -85,8 +86,6 @@ public class SettingsDialog extends Dialog
 	protected Control createDialogArea(Composite parent)
 	{
 		Composite container = (Composite) super.createDialogArea(parent);
-		container.setLayout(new GridLayout(1, false));
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		createOpacityGroup(container);
 		try
@@ -97,6 +96,20 @@ public class SettingsDialog extends Dialog
 		{
 			e.printStackTrace();
 		}
+
+		Group updateGroup = new Group(container, SWT.NONE);
+		updateGroup.setText(RB.getString(RB.DIALOG_SETTINGS_GENERAL_UPDATE_TITLE));
+
+		Label updateMessage = new Label(updateGroup, SWT.NONE);
+		updateMessage.setText(RB.getString(RB.DIALOG_SETTINGS_GENERAL_UPDATE_MESSAGE));
+
+		updateIntervalComboViewer = new UpdateIntervalComboViewer(updateGroup, SWT.NONE);
+
+		GridLayoutUtils.useDefault().applyTo(container);
+		GridLayoutUtils.useDefault().applyTo(updateGroup);
+		GridDataUtils.usePredefined(GridDataUtils.GridDataStyle.FILL_BOTH).applyTo(container);
+		GridDataUtils.usePredefined(GridDataUtils.GridDataStyle.FILL_TOP).applyTo(updateGroup);
+		GridDataUtils.usePredefined(GridDataUtils.GridDataStyle.FILL_TOP).applyTo(updateIntervalComboViewer.getCombo());
 
 		return container;
 	}
@@ -331,13 +344,14 @@ public class SettingsDialog extends Dialog
 	protected void createButtonsForButtonBar(Composite parent)
 	{
 		okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		okButton.setEnabled(false);
+		okButton.setEnabled(!CollectionUtils.isEmpty(activeProjects));
 	}
 
 	@Override
 	protected void okPressed()
 	{
 		TimesheetPropertyReader.opacity = scale.getSelection();
+		TimesheetPropertyReader.updateInterval = updateIntervalComboViewer.getSelectedItem();
 
 		try
 		{

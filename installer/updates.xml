@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateDescriptor baseUrl="">
+	<entry archive="false" bundledJre="windows-amd64-1.8.0_40" fileName="timesheetinator_win-x64_1_17_10_21.exe" fileSize="42992128"
+		   newMediaFileId="141" newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="141" updatableVersionMax="" updatableVersionMin="">
+		<comment language="en"/>
+	</entry>
+	<entry archive="false" bundledJre="linux-amd64-1.8.0_31" fileName="timesheetinator_linux-x64_1_17_10_21.sh" fileSize="48553532"
+		   newMediaFileId="205" newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="205" updatableVersionMax="" updatableVersionMin="">
+		<comment language="en"/>
+	</entry>
+	<entry archive="false" bundledJre="macosx-amd64-1.8.0_40" fileName="timesheetinator_macos_1_17_10_21.dmg" fileSize="45801607" newMediaFileId="142"
+		   newVersion="1.17.10.21" singleBundle="true" targetMediaFileId="142" updatableVersionMax="" updatableVersionMin="">
+		<comment language="en"/>
+	</entry>
+	<entry archive="false" bundledJre="windows-x86-1.8.0_40" fileName="timesheetinator_win-x86_1_17_10_21.exe" fileSize="39575040"
+		   newMediaFileId="202" newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="202" updatableVersionMax="" updatableVersionMin="">
+		<comment language="en"/>
+	</entry>
+	<entry archive="false" bundledJre="linux-x86-1.8.0_31" fileName="timesheetinator_linux-x86_1_17_10_21.sh" fileSize="50216454" newMediaFileId="208"
+		   newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="208" updatableVersionMax="" updatableVersionMin="">
+		<comment language="en"/>
+	</entry>
+</updateDescriptor>
