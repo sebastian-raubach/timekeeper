@@ -946,7 +946,7 @@ context.goForward(1, true, true);
                   <java class="java.beans.XMLDecoder">
                     <object class="com.install4j.runtime.beans.actions.update.CheckForUpdateAction">
                       <void property="url">
-                        <string>https://github.com/sebastian-raubach/timesheetinator/blob/master/installers/updates.xml</string>
+                        <string>https://raw.githubusercontent.com/sebastian-raubach/timesheetinator/master/installer/updates.xml</string>
                       </void>
                       <void property="variable">
                         <string>updateDescriptor</string>

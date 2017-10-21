@@ -45,7 +45,7 @@ public class Timesheetinator extends RestartableApplication
 	private static final String APP_ID         = "2414-6232-2575-1498";
 	private static final String UPDATE_ID      = "314";
 	private static final String VERSION_NUMBER = "x.xx.xx.xx";
-	private static final String UPDATER_URL    = "https://github.com/sebastian-raubach/timesheetinator/blob/master/installers/updates.xml";
+	private static final String UPDATER_URL    = "https://raw.githubusercontent.com/sebastian-raubach/timesheetinator/master/installer/updates.xml";
 
 	public static final  boolean READ_ONLY_MODE = false;
 	private static final int     WRITE_INTERVAL = 300000;
