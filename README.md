@@ -1,6 +1,6 @@
 # Timekeeper
 
-[[https://raw.githubusercontent.com/sebastian-raubach/timekeeper/master/img/logo.png|alt=logo]]
+![Logo](img/logo.png?raw=true "Logo")
 
 Timekeeper is a tool to keep track of the time you spend on each of your projects at work.
 
