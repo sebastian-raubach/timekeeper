@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<project name="Timesheetinator" basedir="." default="clean-build">
+<project name="Timekeeper" basedir="." default="clean-build">
 
 	<property name="src.dir" value="src"/>
 
@@ -28,7 +28,7 @@
 	<property name="res.dir" value="res"/>
 
 	<!-- Define the main class -->
-	<property name="main-class" value="baz.timesheetinator.Timesheetinator"/>
+	<property name="main-class" value="baz.timekeeper.Timekeeper"/>
 
 	<!-- Define the class path -->
 	<path id="classpath">
@@ -88,7 +88,7 @@
 
 	<!-- Ask for the version number -->
 	<target name="getversion">
-		<input addproperty="i4j.version" message="Enter the version number of G3DI:"/>
+		<input addproperty="i4j.version" message="Enter the version number of Timekeeper:"/>
 	</target>
 
 	<!-- Build the installers -->
@@ -101,7 +101,7 @@
 			<fileset dir="installer" includes="**/*.dmg"/>
 		</delete>
 
-		<install4j projectfile="installer/timesheetinator.install4j" release="${i4j.version}"/>
+		<install4j projectfile="installer/timekeeper.install4j" release="${i4j.version}"/>
 	</target>
 
 </project>

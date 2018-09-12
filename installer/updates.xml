@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updateDescriptor baseUrl="">
-	<entry archive="false" bundledJre="windows-amd64-1.8.0_40" fileName="timesheetinator_win-x64_1_17_10_21.exe" fileSize="44084224"
-		   newMediaFileId="141" newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="141" updatableVersionMax="" updatableVersionMin="">
-		<comment language="en"/>
-	</entry>
-	<entry archive="false" bundledJre="linux-amd64-1.8.0_31" fileName="timesheetinator_linux-x64_1_17_10_21.sh" fileSize="49645267"
-		   newMediaFileId="205" newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="205" updatableVersionMax="" updatableVersionMin="">
-		<comment language="en"/>
-	</entry>
-	<entry archive="false" bundledJre="macosx-amd64-1.8.0_40" fileName="timesheetinator_macos_1_17_10_21.dmg" fileSize="46895239" newMediaFileId="142"
-		   newVersion="1.17.10.21" singleBundle="true" targetMediaFileId="142" updatableVersionMax="" updatableVersionMin="">
-		<comment language="en"/>
-	</entry>
-	<entry archive="false" bundledJre="windows-x86-1.8.0_40" fileName="timesheetinator_win-x86_1_17_10_21.exe" fileSize="40666624"
-		   newMediaFileId="202" newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="202" updatableVersionMax="" updatableVersionMin="">
-		<comment language="en"/>
-	</entry>
-	<entry archive="false" bundledJre="linux-x86-1.8.0_31" fileName="timesheetinator_linux-x86_1_17_10_21.sh" fileSize="51308212" newMediaFileId="208"
-		   newVersion="1.17.10.21" singleBundle="false" targetMediaFileId="208" updatableVersionMax="" updatableVersionMin="">
-		<comment language="en"/>
-	</entry>
+  <entry archive="false" bundledJre="linux-amd64-1.8.0_31" fileName="timekeeper_linux-x64_1_18_09_12.sh" fileSize="49763144" newMediaFileId="205"
+         newVersion="1.18.09.12" singleBundle="false" targetMediaFileId="205" updatableVersionMax="" updatableVersionMin="">
+    <comment language="en"/>
+  </entry>
+  <entry archive="false" bundledJre="windows-amd64-1.8.0_40" fileName="timekeeper_win-x64_1_18_09_12.exe" fileSize="44907008" newMediaFileId="141"
+         newVersion="1.18.09.12" singleBundle="false" targetMediaFileId="141" updatableVersionMax="" updatableVersionMin="">
+    <comment language="en"/>
+  </entry>
+  <entry archive="false" bundledJre="macosx-amd64-1.8.0_40" fileName="timekeeper_macos_1_18_09_12.dmg" fileSize="47005831" newMediaFileId="142"
+         newVersion="1.18.09.12" singleBundle="true" targetMediaFileId="142" updatableVersionMax="" updatableVersionMin="">
+    <comment language="en"/>
+  </entry>
+  <entry archive="false" bundledJre="windows-x86-1.8.0_40" fileName="timekeeper_win-x86_1_18_09_12.exe" fileSize="41490432" newMediaFileId="202"
+         newVersion="1.18.09.12" singleBundle="false" targetMediaFileId="202" updatableVersionMax="" updatableVersionMin="">
+    <comment language="en"/>
+  </entry>
+  <entry archive="false" bundledJre="linux-x86-1.8.0_31" fileName="timekeeper_linux-x86_1_18_09_12.sh" fileSize="51426615" newMediaFileId="208"
+         newVersion="1.18.09.12" singleBundle="false" targetMediaFileId="208" updatableVersionMax="" updatableVersionMin="">
+    <comment language="en"/>
+  </entry>
 </updateDescriptor>

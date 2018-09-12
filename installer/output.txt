@@ -1,7 +1,7 @@
 # List of generated media files. The columns are tab-separated:
 # id | media file type | display name | media file path
-141	windows	Windows-x64	D:\workspaces\java-intellij\timesheetinator\installer\timesheetinator_win-x64_1_17_10_21.exe
-205	unix	Linux-x64	D:\workspaces\java-intellij\timesheetinator\installer\timesheetinator_linux-x64_1_17_10_21.sh
-142	macos	Mac OS X Single Bundle	D:\workspaces\java-intellij\timesheetinator\installer\timesheetinator_macos_1_17_10_21.dmg
-202	windows	Windows-x86	D:\workspaces\java-intellij\timesheetinator\installer\timesheetinator_win-x86_1_17_10_21.exe
-208	unix	Linux-x86	D:\workspaces\java-intellij\timesheetinator\installer\timesheetinator_linux-x86_1_17_10_21.sh
+205	unix	Linux-x64	D:\workspaces\java-intellij\timesheetinator\installer\timekeeper_linux-x64_1_18_09_12.sh
+141	windows	Windows-x64	D:\workspaces\java-intellij\timesheetinator\installer\timekeeper_win-x64_1_18_09_12.exe
+142	macos	Mac OS X Single Bundle	D:\workspaces\java-intellij\timesheetinator\installer\timekeeper_macos_1_18_09_12.dmg
+202	windows	Windows-x86	D:\workspaces\java-intellij\timesheetinator\installer\timekeeper_win-x86_1_18_09_12.exe
+208	unix	Linux-x86	D:\workspaces\java-intellij\timesheetinator\installer\timekeeper_linux-x86_1_18_09_12.sh
