@@ -1,5 +1,7 @@
 # Timekeeper
 
+[[https://github.com/sebastian-raubach/timekeeper/blob/master/img/logo.png|alt=logo]]
+
 Timekeeper is a tool to keep track of the time you spend on each of your projects at work.
 
 Easily switch between projects with the click of a button.
